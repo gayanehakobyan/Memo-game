@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Play with color</title>
+	<style>
+		.color{
+			background:grey;
+			width: 90px;
+			height: 90px;
+			border-radius:15px;	
+			cursor: -webkit-grab;
+			box-shadow: 0 0 10px 2px #888888;
+			border: 1px solid black;
+			display: inline-block;
+		}
+        .color:hover:not(.active) {
+			box-shadow: 0 0 10px 2px #aaa;
+             }
+		#main{
+			width: 100vw;
+			height: 100vh;
+		}
+		#childdiv{
+			max-width:640px;
+			position: absolute;
+			top:2%;
+			left:30%;
+		}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<div id="childdiv"></div>
+	</div>
+	<script>
+		document.addEventListener("DOMContentLoaded", function (event) {
+		let obj={};
+		let rgbColor=["#000000", "#1e88e5", "#00796b", "#388e3c", "#e65100", "#e53935", "#A52A2A", "#7FFF00", "#D2691E", "#00008B", "#FF1493", "#FFFAF0", "#4B0082", "#F08080", "#808000", "#DDA0DD", "#8B4513", "#FFFF00"];
+		let idarr=[];
+		let cells = Array(36);
+
+
+		function getRandomIndex() {
+			let index = Math.floor(Math.random() * cells.length);
+			//console.log(index)
+			while (cells[index] !== undefined) {
+				index = Math.floor(Math.random() * cells.length);
+			}
+			return index;
+		}
+	
+		for (let i = 0; i < rgbColor.length; i++) {
+			cells[getRandomIndex()] = rgbColor[i];
+			cells[getRandomIndex()] = rgbColor[i];
+		}
+				//console.log(cells);
+
+		for(let i = 0; i < cells.length; i++){
+			idarr[i]=cells[i]+i;
+		}
+		function checkIn() {
+			let arrOfKeys = Object.keys(obj);
+			if(obj[Object.keys(obj)[0]]==obj[Object.keys(obj)[1]]) {
+				delete obj[arrOfKeys[0]];
+				delete obj[arrOfKeys[1]];
+			} else {
+				document.getElementById(arrOfKeys[0]).style.background='grey';
+				document.getElementById(arrOfKeys[1]).style.background='grey';
+				delete obj[arrOfKeys[0]];
+				delete obj[arrOfKeys[1]];
+				console.log(obj)
+			}
+
+		}
+		function opencolor(id, color) {
+			document.getElementById(id).style.background=color;
+			obj=Object.assign(obj,{[id]: color});
+				if(Object.keys(obj).length>2){
+				
+						checkIn();
+				}	
+		}
+		const childdiv = document.querySelector("#childdiv");
+		for(let i=0; i<cells.length; i++){
+				let smoldiv=document.createElement("div");
+				smoldiv.className="color"
+				smoldiv.id=idarr[i];
+				console.log(smoldiv)
+				console.log(idarr, cells)
+				childdiv.appendChild(smoldiv);
+
+				smoldiv.addEventListener('click', function (event) {
+				event.target.style.cursor="-webkit-grabbing";
+				var id=event.target.id;
+				var color=event.target.id.slice(0, 7);
+				opencolor(id, color);
+				});
+		}
+	})
+
+	</script>
+</body>
+</html>
